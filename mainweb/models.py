@@ -57,6 +57,7 @@ class Domain_ip(models.Model):
     )
     status = models.CharField(max_length=10,choices=status_type)
     option = models.CharField(max_length=10,default='0')
+    slb_node = models.CharField(max_length=10,default='0')
     comment = models.TextField(default='暂无说明')
     def __unicode__(self):
         return self.ip
