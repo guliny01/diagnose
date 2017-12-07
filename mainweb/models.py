@@ -103,19 +103,6 @@ class Server(models.Model):
 class Progress_type(models.Model):
     progress_name = models.CharField(max_length=100)
     description = models.CharField(max_length=100)
-    path = models.CharField(max_length=100)
-    content = models.TextField(default='')
-    config_name = models.CharField(max_length=100)
-    config_content = models.TextField(default='')
-    def __unicode__(self):
-        return self.description
-
-class Progress(models.Model):
-    product_rel = models.ForeignKey(Product,related_name='product_rel',on_delete=models.CASCADE)
-    server_rel = models.ForeignKey(Server_type,related_name='server_rel',on_delete=models.CASCADE)
-    progress_rel = models.ForeignKey(Progress_type,related_name='progress_rel',on_delete=models.CASCADE)
-    description = models.CharField(max_length=100)
-    comment = models.TextField(default='暂无说明')
     def __unicode__(self):
         return self.description
 
@@ -126,8 +113,22 @@ class Config_type(models.Model):
     def __unicode__(self):
         return self.config_type_name
 
+class Progress(models.Model):
+    product_rel = models.ForeignKey(Product,related_name='product_rel',on_delete=models.CASCADE)
+    server_rel = models.ForeignKey(Server_type,related_name='server_rel',on_delete=models.CASCADE)
+    progress_rel = models.ForeignKey(Progress_type,related_name='progress_rel',on_delete=models.CASCADE)
+    config_name_rel = models.ForeignKey(Config_type,related_name='config_rel',on_delete=models.CASCADE,default=1)
+    progress_port = models.CharField(max_length=10,default='')
+    description = models.CharField(max_length=100)
+    config_name = models.CharField(max_length=100)
+    config_content = models.TextField(default='')
+    config_path = models.CharField(max_length=100)
+    comment = models.TextField(default='暂无说明')
+    def __unicode__(self):
+        return self.description
+
 class Config(models.Model):
-    config_name_rel = models.ForeignKey(Config_type,related_name='config_rel',on_delete=models.CASCADE)
+    config_name_rel = models.ForeignKey(Config_type,related_name='config_old_rel',on_delete=models.CASCADE)
     config_name = models.CharField(max_length=100)
     description = models.CharField(max_length=100)
     config_content = models.TextField(default='')

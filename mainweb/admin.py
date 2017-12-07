@@ -30,7 +30,7 @@ class Domain_checkAdmin(admin.ModelAdmin):
     list_display = ('domain_name','api_abstract','api_description','api_url')
 
 class Progress_typeAdmin(admin.ModelAdmin):
-    list_display = ('progress_name','path','config_name')
+    list_display = ('progress_name','description')
 
 class Progress_Admin(admin.ModelAdmin):
     list_display = ('description','comment')
