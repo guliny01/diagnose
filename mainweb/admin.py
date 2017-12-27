@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 from django.contrib import admin
-from .models import Product,Domain,Domain_ip,Server,Server_type,Area_type,Domain_idc,Domain_check,Progress_type,Progress,Config_type,Config,Alter
+from .models import Product,Domain,Domain_ip,Server,Server_type,Area_type,Domain_idc,Domain_check,Progress_type,Progress,Config_type,Config,Alter,Undo,Transaction_type
 # Register your models here.
 
 class ProductAdmin(admin.ModelAdmin):
@@ -15,7 +15,7 @@ class Domain_ipAdmin(admin.ModelAdmin):
     list_display = ('name','ip','description','status')
 
 class ServerAdmin(admin.ModelAdmin):
-    list_display = ('product','server','description','public_ip','private_ip','idc_location','status','url_path')
+    list_display = ('product','server','description','public_ip','private_ip','idc_location','status','url_path','ha_status')
 
 class Server_typeAdmin(admin.ModelAdmin):
     list_display = ('server_name','description')
@@ -33,7 +33,7 @@ class Progress_typeAdmin(admin.ModelAdmin):
     list_display = ('progress_name','description')
 
 class Progress_Admin(admin.ModelAdmin):
-    list_display = ('description','comment')
+    list_display = ('product_rel','server_rel','progress_rel','description','config_name_rel','comment')
 
 class Config_typeAdmin(admin.ModelAdmin):
     list_display = ('config_type_name','description')
@@ -44,6 +44,11 @@ class ConfigAdmin(admin.ModelAdmin):
 class AlterAdmin(admin.ModelAdmin):
     list_display = ('alter_name','alter_content','alter_time')
 
+class Transaction_typeAdmin(admin.ModelAdmin):
+    list_display = ('transaction_name','description')
+
+class UndoAdmin(admin.ModelAdmin):
+    list_display = ('product_rel','undo_event','ip','priority','create_time','status')
 
 admin.site.register(Product,ProductAdmin)
 admin.site.register(Domain,DomainAdmin)
@@ -58,3 +63,5 @@ admin.site.register(Progress,Progress_Admin)
 admin.site.register(Config_type,Config_typeAdmin)
 admin.site.register(Config,ConfigAdmin)
 admin.site.register(Alter,AlterAdmin)
+admin.site.register(Undo,UndoAdmin)
+admin.site.register(Transaction_type,Transaction_typeAdmin)

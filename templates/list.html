@@ -1,0 +1,29 @@
+<!-- list.html -->
+{% extends 'base.html' %}
+{% block title %} {{ post.title }} 域名列表 {% endblock %}
+{% block headmessage %}
+    <h3 style='font-family:微软雅黑;'>产品域名列表</h3>
+{% endblock %}
+{% block content %}
+        <p style='font-family:微软雅黑;font-size:12pt;letter-spacing:10pt;'>
+            <table class="table table-striped" border=1 >
+              <thead><th>产品名称</th><th>域名</th><th>api接口</th><th>请求类型</th></thead>
+                <tbody>
+                {% for p in products %}
+                  <tr>
+                    <td>
+                      <a href='/list/{{p.id}}/'>{{p.product.name}}</a>
+                    </td>
+                    <td>{{p.domain}}</td>
+                    <td>{{p.api_url}}</td>
+                    <td>{{p.respone_way}}</td>
+                   <tr>
+                  {% endfor %}
+           </tbody>
+           </table>
+           <hr>
+           <p>总的记录数{{total}}</p>
+           <a href = '/'>返回首页</a>
+        </p>
+{% endblock %}
+

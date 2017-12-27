@@ -16,6 +16,8 @@ class Product(models.Model):
     name = models.CharField(max_length=60)
     area_type = models.ForeignKey(Area_type,on_delete=models.CASCADE)
     description = models.CharField(max_length=100)
+    slo = models.CharField(max_length=100,default='99.9%')
+    mttr_h = models.CharField(max_length=100,default='1')
     contact = models.CharField(max_length=200)
     comment = models.TextField(default='暂无说明')
     def __unicode__(self):
@@ -95,7 +97,8 @@ class Server(models.Model):
     port = models.CharField(max_length=10,default='80')
     url_path = models.CharField(max_length=100,default='/')
     option = models.CharField(max_length=10,default='0')
-    status = models.CharField(max_length=5,choices=status_type)
+    status = models.CharField(max_length=7,choices=status_type)
+    ha_status = models.CharField(max_length=10,default='1')
     comment = models.TextField(default='暂无说明')
     def __unicode__(self):
         return self.description
@@ -140,8 +143,39 @@ class Config(models.Model):
 class Alter(models.Model):
     alter_name = models.CharField(max_length=100)
     alter_content = models.TextField(default='')
-    alter_time = models.DateTimeField(auto_now_add=True)
+    #alter_time = models.DateTimeField(auto_now_add=True)
+    alter_time = models.DateTimeField(default = timezone.now)
     comment = models.TextField(default='暂无说明')
     def __unicode__(self):
         return self.alter_name
 
+class Transaction_type(models.Model):
+    transaction_name = models.CharField(max_length=50)
+    description = models.CharField(max_length=100)
+    comment = models.TextField(default='暂无说明')
+    def __unicode__(self):
+        return self.transaction_name
+
+class Undo(models.Model):
+    product_rel = models.ForeignKey(Product,related_name='product_undo_rel',on_delete=models.CASCADE)
+    undo_event = models.CharField(max_length=100)
+    description = models.CharField(max_length=200)
+    transaction_rel = models.ForeignKey(Transaction_type,related_name='transaction_undo_rel',on_delete=models.CASCADE,default=1)
+    priority_type = (
+        ('P3','P3'),
+        ('P2','P2'),
+        ('P1','P1'),
+    )
+    priority = models.CharField(max_length=4,choices=priority_type,default='P3')
+    ip = models.CharField(max_length=100,default='/')
+    create_time  = models.DateTimeField(default = timezone.now)
+    finish_time  = models.DateTimeField(default = timezone.now)
+    status_type = (
+        ('Undo','Undo'),
+        ('Finished','Finished'),
+        ('resolved','resolved'),
+    )
+    status = models.CharField(max_length=8,choices=status_type)
+    comment = models.TextField(default='暂无说明')
+    def __unicode__(self):
+        return self.undo_event
